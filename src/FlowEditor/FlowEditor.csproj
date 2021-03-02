@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <AssemblyName>VFlow.FlowEditor</AssemblyName>
+    <RootNamespace>VFlow</RootNamespace>
+    <Authors>BenDerPan</Authors>
+    <Company>BenDerPan</Company>
+    <Product>VFlow</Product>
+    <Description>Visual flow node editor for workflow.</Description>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/BenDerPan/VFlow</PackageProjectUrl>
+    <PackageIcon>vflow.png</PackageIcon>
+    <RepositoryType>Github</RepositoryType>
+    <RepositoryUrl>https://github.com/BenDerPan/VFlow</RepositoryUrl>
+    <PackageTags>Visual Flow Node Editor WPF .NETCore</PackageTags>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="vflow.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+
+</Project>
