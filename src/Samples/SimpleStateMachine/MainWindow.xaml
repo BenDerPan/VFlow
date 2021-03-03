@@ -1,0 +1,95 @@
+﻿<Window x:Class="SimpleStateMachine.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SimpleStateMachine"
+        xmlns:vf="http://benderpan.github.io/winfx/xaml/VFlow"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Window.DataContext>
+        <local:SimpleStateMachineViewModel/>
+    </Window.DataContext>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <vf:FlowEditor x:Name="Editor"
+                       ItemsSource="{Binding States}"
+                       SelectedItem="{Binding SelectedState}"
+                       SelectedItems="{Binding SelectedStates}"
+                       Connections="{Binding Transitions}"
+                       PendingConnection="{Binding PendingTransition}">
+
+            <vf:FlowEditor.PendingConnectionTemplate>
+                <DataTemplate DataType="{x:Type local:TransitionViewModel}">
+                    <vf:PendingConnection Source="{Binding Source, Mode=OneWayToSource}"
+                                              Target="{Binding Target, Mode=OneWayToSource}"
+                                              StrokeDashArray=""
+                                              EnablePreview="True">
+                        <vf:PendingConnection.Template>
+                            <ControlTemplate TargetType="{x:Type vf:PendingConnection}">
+                                <vf:DirectionalConnection Source="{TemplateBinding SourceAnchor}"
+                                                              Target="{TemplateBinding TargetAnchor}"
+                                                              StrokeThickness="{TemplateBinding StrokeThickness}"
+                                                              StrokeDashArray="{TemplateBinding StrokeDashArray}"
+                                                              SourceOffset="{Binding Source.Size}"
+                                                              OffsetMode="Edge" />
+                            </ControlTemplate>
+                        </vf:PendingConnection.Template>
+                    </vf:PendingConnection>
+                </DataTemplate>
+            </vf:FlowEditor.PendingConnectionTemplate>
+
+            <vf:FlowEditor.ConnectionTemplate>
+                <DataTemplate DataType="{x:Type local:TransitionViewModel}">
+                    <vf:DirectionalConnection Source="{Binding Source.Anchor}"
+                                                  Target="{Binding Target.Anchor}"
+                                                  SourceOffset="{Binding Source.Size}"
+                                                  TargetOffset="{Binding Target.Size}"
+                                                  OffsetMode="Edge"
+                                                  Tag="{Binding}">
+                        <vf:DirectionalConnection.Style>
+                            <Style TargetType="{x:Type vf:DirectionalConnection}"
+                                   BasedOn="{StaticResource {x:Type vf:DirectionalConnection}}">
+                                <Setter Property="StrokeThickness"
+                                        Value="3" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsActive}"
+                                                 Value="True">
+                                        <Setter Property="Stroke"
+                                                Value="{DynamicResource ActiveStateBrush}" />
+                                        <Setter Property="StrokeThickness"
+                                                Value="6" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </vf:DirectionalConnection.Style>
+                        <vf:DirectionalConnection.ContextMenu>
+                            <ContextMenu DataContext="{Binding DataContext, Source={StaticResource EditorProxy}}">
+                                <MenuItem Header="_Delete"
+                                          Icon="{StaticResource DeleteIcon}"
+                                          Command="{Binding DeleteTransitionCommand}"
+                                          CommandParameter="{Binding PlacementTarget.Tag, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" />
+                            </ContextMenu>
+                        </vf:DirectionalConnection.ContextMenu>
+                    </vf:DirectionalConnection>
+                </DataTemplate>
+            </vf:FlowEditor.ConnectionTemplate>
+
+            <vf:FlowEditor.ItemTemplate>
+                <DataTemplate DataType="{x:Type local:StateViewModel}">
+                    <vf:StateNode Content="{Binding}" ActualSize="60,35">
+                        <vf:StateNode.ContentTemplate>
+                            <DataTemplate DataType="{x:Type local:StateViewModel}">
+                                <TextBlock Text="{Binding Name}"/>
+                            </DataTemplate>
+                        </vf:StateNode.ContentTemplate>
+                    </vf:StateNode>
+                </DataTemplate>
+            </vf:FlowEditor.ItemTemplate>
+            
+        </vf:FlowEditor>
+    </Grid>
+</Window>
