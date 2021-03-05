@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 
 namespace VFlow
 {
-    public class ObservableObject : INotifyPropertyChanged
+    public class VFlowObservableObject : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler? PropertyChanged;
 

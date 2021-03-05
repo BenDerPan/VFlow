@@ -6,8 +6,12 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
+
+                <ResourceDictionary Source="pack://application:,,,/VFlow.FlowEditor;component/Themes/VFlow.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/VFlow.FlowEditor;component/Themes/Light.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/VFlow.FlowEditor;component/Themes/Dark.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/SimpleStateMachine;component/Themes/Base/Light.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/SimpleStateMachine;component/Themes/Base/Icons.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/SimpleStateMachine;component/Themes/Light.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

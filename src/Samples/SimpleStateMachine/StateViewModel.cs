@@ -4,7 +4,7 @@ using VFlow;
 
 namespace SimpleStateMachine
 {
-    public class StateViewModel : ObservableObject
+    public class StateViewModel : VFlowObservableObject
     {
         public Guid Id { get; }
 
@@ -42,12 +42,44 @@ namespace SimpleStateMachine
             set => SetProperty(ref _name, value);
         }
 
-   
-      
+        private bool _isRenaming;
+        public bool IsRenaming
+        {
+            get => _isRenaming;
+            set => SetProperty(ref _isRenaming, value);
+        }
+
+        private bool _isActive;
+        public bool IsActive
+        {
+            get => _isActive;
+            set => SetProperty(ref _isActive, value);
+        }
+
+        private BlackboardItemReferenceViewModel? _actionReference;
+        public BlackboardItemReferenceViewModel? ActionReference
+        {
+            get => _actionReference;
+            set
+            {
+                if (SetProperty(ref _actionReference, value))
+                {
+                    SetAction(_actionReference);
+                }
+            }
+        }
+
+        public BlackboardItemViewModel? Action { get; private set; }
 
         public bool IsEditable { get; set; } = true;
-        public SimpleStateMachineViewModel Graph { get; internal set; } = default!;
-        public NodifyObservableCollection<StateViewModel> Transitions { get; } = new NodifyObservableCollection<StateViewModel>();
+        public StateMachineViewModel Graph { get; internal set; } = default!;
+        public VFlowObservableCollection<StateViewModel> Transitions { get; } = new VFlowObservableCollection<StateViewModel>();
 
+        private void SetAction(BlackboardItemReferenceViewModel? actionRef)
+        {
+            Action = BlackboardDescriptor.GetItem(actionRef);
+
+            OnPropertyChanged(nameof(Action));
+        }
     }
 }

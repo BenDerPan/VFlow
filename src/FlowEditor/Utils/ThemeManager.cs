@@ -24,7 +24,7 @@ namespace VFlow
         {
             PreloadTheme("Dark");
             PreloadTheme("Light");
-            PreloadTheme("Nodify");
+            PreloadTheme("VFlow");
 
             SetNextThemeCommand = new DelegateCommand(SetNextTheme);
         }

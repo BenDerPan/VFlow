@@ -6,14 +6,14 @@ using System.ComponentModel;
 
 namespace VFlow
 {
-    public interface INodifyObservableCollection<T>
+    public interface IVFlowObservableCollection<T>
     {
         /// <summary>
         /// Called when a new item is added
         /// </summary>
         /// <param name="added">The callback to execute when an item is added</param>
         /// <returns>Returns self</returns>
-        INodifyObservableCollection<T> WhenAdded(Action<T> added);
+        IVFlowObservableCollection<T> WhenAdded(Action<T> added);
 
         /// <summary>
         /// Called when an existing item is removed
@@ -21,7 +21,7 @@ namespace VFlow
         /// </summary>
         /// <param name="added">The callback to execute when an item is removed</param>
         /// <returns>Returns self</returns>
-        INodifyObservableCollection<T> WhenRemoved(Action<T> removed);
+        IVFlowObservableCollection<T> WhenRemoved(Action<T> removed);
 
         /// <summary>
         /// Called when the collection is cleared
@@ -29,10 +29,10 @@ namespace VFlow
         /// </summary>
         /// <param name="added">The callback to execute when the collection is cleared</param>
         /// <returns>Returns self</returns>
-        INodifyObservableCollection<T> WhenCleared(Action<IList<T>> cleared);
+        IVFlowObservableCollection<T> WhenCleared(Action<IList<T>> cleared);
     }
 
-    public class NodifyObservableCollection<T> : Collection<T>, INodifyObservableCollection<T>, INotifyPropertyChanged, INotifyCollectionChanged
+    public class VFlowObservableCollection<T> : Collection<T>, IVFlowObservableCollection<T>, INotifyPropertyChanged, INotifyCollectionChanged
     {
         protected static readonly PropertyChangedEventArgs IndexerPropertyChanged = new PropertyChangedEventArgs("Item[]");
         protected static readonly PropertyChangedEventArgs CountPropertyChanged = new PropertyChangedEventArgs("Count");
@@ -45,18 +45,18 @@ namespace VFlow
         public event NotifyCollectionChangedEventHandler? CollectionChanged;
         public event PropertyChangedEventHandler? PropertyChanged;
 
-        public NodifyObservableCollection()
+        public VFlowObservableCollection()
         {
         }
 
-        public NodifyObservableCollection(IEnumerable<T> collection)
+        public VFlowObservableCollection(IEnumerable<T> collection)
             : base(new List<T>(collection))
         {
         }
 
         #region Collection Events
 
-        public INodifyObservableCollection<T> WhenAdded(Action<T> added)
+        public IVFlowObservableCollection<T> WhenAdded(Action<T> added)
         {
             if (added != null)
             {
@@ -65,7 +65,7 @@ namespace VFlow
             return this;
         }
 
-        public INodifyObservableCollection<T> WhenRemoved(Action<T> removed)
+        public IVFlowObservableCollection<T> WhenRemoved(Action<T> removed)
         {
             if (removed != null)
             {
@@ -74,7 +74,7 @@ namespace VFlow
             return this;
         }
 
-        public INodifyObservableCollection<T> WhenCleared(Action<IList<T>> cleared)
+        public IVFlowObservableCollection<T> WhenCleared(Action<IList<T>> cleared)
         {
             if (cleared != null)
             {

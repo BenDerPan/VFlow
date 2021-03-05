@@ -1,0 +1,102 @@
+﻿<Window x:Class="FuncFlow.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vf="http://benderpan.github.io/winfx/xaml/VFlow"
+        xmlns:local="clr-namespace:FuncFlow"
+        mc:Ignorable="d"
+        Background="{DynamicResource FlowEditor.BackgroundBrush}"
+        Foreground="{DynamicResource ForegroundBrush}"
+        Title="MainWindow" Height="450" Width="800">
+    <Window.DataContext>
+        <local:FuncFlowViewModel/>
+    </Window.DataContext>
+
+    <Window.Resources>
+        <vf:BindingProxy x:Key="EditorPorxy" DataContext="{Binding}"/>
+
+        <GeometryDrawing x:Key="SmallGridGeometry"
+                         Geometry="M0,0 L0,1 0.03,1 0.03,0.03 1,0.03 1,0 Z"
+                         Brush="{DynamicResource GridLinesBrush}" />
+
+        <GeometryDrawing x:Key="LargeGridGeometry"
+                         Geometry="M0,0 L0,1 0.015,1 0.015,0.015 1,0.015 1,0 Z"
+                         Brush="{DynamicResource GridLinesBrush}" />
+
+        <DrawingBrush x:Key="SmallGridLinesDrawingBrush"
+                      TileMode="Tile"
+                      ViewportUnits="Absolute"
+                      Viewport="0 0 15 15"
+                      Transform="{Binding AppliedTransform, ElementName=Editor}"
+                      Drawing="{StaticResource SmallGridGeometry}" />
+
+        <DrawingBrush x:Key="LargeGridLinesDrawingBrush"
+                      TileMode="Tile"
+                      ViewportUnits="Absolute"
+                      Opacity="0.5"
+                      Viewport="0 0 150 150"
+                      Transform="{Binding AppliedTransform, ElementName=Editor}"
+                      Drawing="{StaticResource LargeGridGeometry}" />
+
+
+    </Window.Resources>
+    
+    <Grid>
+        <vf:FlowEditor ItemsSource="{Binding FuncItems}"
+                       Connections="{Binding Connections}"
+                       ConnectionCompletedCommand="{Binding CreateConnectionCommand}"
+                       DisconnectConnectorCommand="{Binding DisconnectConnectorCommand}"
+                       Background="{StaticResource SmallGridLinesDrawingBrush}"
+                       GridCellSize="15"
+                       x:Name="Editor">
+            
+            <!--连接线模板-->
+            <vf:FlowEditor.ConnectionTemplate>
+                <DataTemplate DataType="{x:Type local:ConnectionViewModel}">
+                    <vf:CircuitConnection Source="{Binding Output.Anchor}"
+                                          Target="{Binding Input.Anchor}"
+                                          SourceOffset="10,0"
+                                          TargetOffset="20 0"
+                                          OffsetMode="Circle"/>
+                </DataTemplate>
+            </vf:FlowEditor.ConnectionTemplate>
+            
+            <!--单元容器样式-->
+            <vf:FlowEditor.ItemContainerStyle>
+                <Style TargetType="{x:Type vf:ItemContainer}" BasedOn="{StaticResource {x:Type vf:ItemContainer}}">
+                    <Setter Property="Location" Value="{Binding Location}"/>
+                    <Setter Property="IsSelected" Value="{Binding IsSelected}"/>
+                </Style>
+            </vf:FlowEditor.ItemContainerStyle>
+            
+            <!--右键菜单-->
+            <vf:FlowEditor.ContextMenu>
+                <ContextMenu DataContext="{Binding DataContext, Source={StaticResource EditorPorxy}}">
+                    <MenuItem Header="增加流程"
+                              ItemsSource="{Binding AvailableFuncItems}">
+                        <MenuItem.ItemContainerStyle>
+                            <Style TargetType="MenuItem">
+                                <Setter Property="Header"
+                                        Value="{Binding Title}" />
+                                <Setter Property="Command"
+                                        Value="{Binding DataContext.CreateFuncItemCommand, Source={StaticResource EditorProxy}}" />
+                                <Setter Property="CommandParameter">
+                                    <Setter.Value>
+                                        <MultiBinding Converter="{local:FuncItemInfoConverter}">
+                                            <Binding />
+                                            <Binding RelativeSource="{RelativeSource AncestorType=ContextMenu}"
+                                                     Path="PlacementTarget.MouseLocation" />
+                                        </MultiBinding>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </MenuItem.ItemContainerStyle>
+                    </MenuItem>
+                </ContextMenu>
+            </vf:FlowEditor.ContextMenu>
+            
+            
+        </vf:FlowEditor>
+    </Grid>
+</Window>
