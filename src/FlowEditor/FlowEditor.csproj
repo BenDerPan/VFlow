@@ -16,6 +16,7 @@
     <RepositoryUrl>https://github.com/BenDerPan/VFlow</RepositoryUrl>
     <PackageTags>Visual Flow Node Editor WPF .NETCore</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Copyright>https://github.com/BenDerPan/VFlow</Copyright>
   </PropertyGroup>
 
   <ItemGroup>

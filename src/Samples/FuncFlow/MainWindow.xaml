@@ -14,7 +14,7 @@
     </Window.DataContext>
 
     <Window.Resources>
-        <vf:BindingProxy x:Key="EditorPorxy" DataContext="{Binding}"/>
+        <vf:BindingProxy x:Key="EditorProxy" DataContext="{Binding}"/>
 
         <GeometryDrawing x:Key="SmallGridGeometry"
                          Geometry="M0,0 L0,1 0.03,1 0.03,0.03 1,0.03 1,0 Z"
@@ -38,7 +38,8 @@
                       Viewport="0 0 150 150"
                       Transform="{Binding AppliedTransform, ElementName=Editor}"
                       Drawing="{StaticResource LargeGridGeometry}" />
-
+        
+        <local:ItemToListConverter x:Key="ItemToListConverter" />
 
     </Window.Resources>
     
@@ -50,6 +51,58 @@
                        Background="{StaticResource SmallGridLinesDrawingBrush}"
                        GridCellSize="15"
                        x:Name="Editor">
+
+            <vf:FlowEditor.Resources>
+                <Style TargetType="{x:Type vf:NodeInput}"
+                       BasedOn="{StaticResource {x:Type vf:NodeInput}}">
+                    <Setter Property="Header"
+                            Value="{Binding}" />
+                    <Setter Property="IsConnected"
+                            Value="{Binding IsConnected}" />
+                    <Setter Property="Anchor"
+                            Value="{Binding Anchor, Mode=OneWayToSource}" />
+                    <Setter Property="ToolTip"
+                            Value="{Binding Value}" />
+                    <Setter Property="HeaderTemplate">
+                        <Setter.Value>
+                            <DataTemplate DataType="{x:Type local:ConnectorViewModel}">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Title}"
+                                               Margin="0 0 5 0" />
+                                    <TextBox Text="{Binding Value}"
+                                             Visibility="{Binding IsConnected, Converter={vf:BooleanToVisibilityConverter Negate=True}}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+
+                <Style TargetType="{x:Type vf:NodeOutput}"
+                       BasedOn="{StaticResource {x:Type vf:NodeOutput}}">
+                    <Setter Property="Header"
+                            Value="{Binding}" />
+                    <Setter Property="IsConnected"
+                            Value="{Binding IsConnected}" />
+                    <Setter Property="Anchor"
+                            Value="{Binding Anchor, Mode=OneWayToSource}" />
+                    <Setter Property="HeaderTemplate">
+                        <Setter.Value>
+                            <DataTemplate DataType="{x:Type local:ConnectorViewModel}">
+                                <TextBox Text="{Binding Value}"
+                                         IsEnabled="False" />
+                            </DataTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+
+                <DataTemplate DataType="{x:Type local:FuncItemViewModel}">
+                    <vf:Node Content="{Binding Title}"
+                                 Input="{Binding Input}"
+                                 Output="{Binding Output, Converter={StaticResource ItemToListConverter}}"
+                                 Padding="5 0 0 0" />
+                </DataTemplate>
+
+            </vf:FlowEditor.Resources>
             
             <!--连接线模板-->
             <vf:FlowEditor.ConnectionTemplate>
@@ -72,7 +125,7 @@
             
             <!--右键菜单-->
             <vf:FlowEditor.ContextMenu>
-                <ContextMenu DataContext="{Binding DataContext, Source={StaticResource EditorPorxy}}">
+                <ContextMenu DataContext="{Binding DataContext, Source={StaticResource EditorProxy}}">
                     <MenuItem Header="增加流程"
                               ItemsSource="{Binding AvailableFuncItems}">
                         <MenuItem.ItemContainerStyle>
