@@ -9,7 +9,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{7A39
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FuncFlow", "Samples\FuncFlow\FuncFlow.csproj", "{64BC877F-A63B-4DCE-B3A6-08A1D7FAEC1E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VFlow", "VFlow\VFlow.csproj", "{AEA00A12-DBE3-4D93-9C90-71077D316601}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VFlow", "VFlow\VFlow.csproj", "{AEA00A12-DBE3-4D93-9C90-71077D316601}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoVFlow", "GoVFlow\GoVFlow.csproj", "{DD8233FF-12FB-4989-9894-8B70236CBE81}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,6 +31,10 @@ Global
 		{AEA00A12-DBE3-4D93-9C90-71077D316601}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AEA00A12-DBE3-4D93-9C90-71077D316601}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AEA00A12-DBE3-4D93-9C90-71077D316601}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DD8233FF-12FB-4989-9894-8B70236CBE81}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DD8233FF-12FB-4989-9894-8B70236CBE81}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DD8233FF-12FB-4989-9894-8B70236CBE81}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DD8233FF-12FB-4989-9894-8B70236CBE81}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
