@@ -3,10 +3,194 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vf="http://benderpan.github.io/winfx/xaml/VFlow"
         xmlns:local="clr-namespace:VFlow"
         mc:Ignorable="d"
-        Title="VFlow" Height="450" Width="800">
-    <Grid>
+        Title="VFlow" Height="800" Width="1200">
+    <Window.DataContext>
+        <local:MainViewModel/>
+    </Window.DataContext>
+    <Window.Resources>
+        <vf:BindingProxy x:Key="EditorProxy" DataContext="{Binding}"/>
 
+        <GeometryDrawing x:Key="SmallGridGeometry"
+                         Geometry="M0,0 L0,1 0.03,1 0.03,0.03 1,0.03 1,0 Z"
+                         Brush="{DynamicResource GridLinesBrush}" />
+
+        <GeometryDrawing x:Key="LargeGridGeometry"
+                         Geometry="M0,0 L0,1 0.015,1 0.015,0.015 1,0.015 1,0 Z"
+                         Brush="{DynamicResource GridLinesBrush}" />
+
+        <DrawingBrush x:Key="SmallGridLinesDrawingBrush"
+                      TileMode="Tile"
+                      ViewportUnits="Absolute"
+                      Viewport="0 0 15 15"
+                      Transform="{Binding AppliedTransform, ElementName=Editor}"
+                      Drawing="{StaticResource SmallGridGeometry}" />
+
+        <DrawingBrush x:Key="LargeGridLinesDrawingBrush"
+                      TileMode="Tile"
+                      ViewportUnits="Absolute"
+                      Opacity="0.5"
+                      Viewport="0 0 150 150"
+                      Transform="{Binding AppliedTransform, ElementName=Editor}"
+                      Drawing="{StaticResource LargeGridGeometry}" />
+
+        <local:ItemToListConverter x:Key="ItemToListConverter" />
+
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+
+        <Menu Grid.Row="0">
+            <MenuItem Header="File">
+                <MenuItem Header="Exit"/>
+            </MenuItem>
+        </Menu>
+        <ToolBar Grid.Row="1">
+            <Button Content="Add"/>
+        </ToolBar>
+
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto" MinWidth="250" MaxWidth="400"/>
+                <ColumnDefinition Width="3"/>
+                <ColumnDefinition Width="*" MinWidth="200"/>
+                <ColumnDefinition Width="3"/>
+                <ColumnDefinition Width="auto" MinWidth="250" MaxWidth="400"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.Column="0" Margin="5">
+                <TextBlock Text="这里将放置各种现有任务流节点"/>
+            </Grid>
+            <GridSplitter Grid.Column="1" Width="3" HorizontalAlignment="Stretch"></GridSplitter>
+            <Grid Grid.Column="2" Background="Gray" Margin="5">
+
+                <vf:FlowEditor ItemsSource="{Binding FuncItems}"
+                       Connections="{Binding Connections}"
+                       ConnectionCompletedCommand="{Binding CreateConnectionCommand}"
+                       DisconnectConnectorCommand="{Binding DisconnectConnectorCommand}"
+                       Background="{StaticResource SmallGridLinesDrawingBrush}"
+                       GridCellSize="15" 
+                       x:Name="Editor">
+
+                    <vf:FlowEditor.Resources>
+                        <Style TargetType="{x:Type vf:NodeInput}"
+                       BasedOn="{StaticResource {x:Type vf:NodeInput}}">
+                            <Setter Property="Header"
+                            Value="{Binding}" />
+                            <Setter Property="IsConnected"
+                            Value="{Binding IsConnected}" />
+                            <Setter Property="Anchor"
+                            Value="{Binding Anchor, Mode=OneWayToSource}" />
+                            <Setter Property="ToolTip"
+                            Value="{Binding Value}" />
+                            <Setter Property="HeaderTemplate">
+                                <Setter.Value>
+                                    <DataTemplate DataType="{x:Type local:ConnectorViewModel}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{Binding Title}"
+                                               Margin="0 0 5 0" />
+                                            <TextBox Text="{Binding Value}"
+                                             Visibility="{Binding IsConnected, Converter={vf:BooleanToVisibilityConverter Negate=True}}" />
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+
+                        <Style TargetType="{x:Type vf:NodeOutput}"
+                       BasedOn="{StaticResource {x:Type vf:NodeOutput}}">
+                            <Setter Property="Header"
+                            Value="{Binding}" />
+                            <Setter Property="IsConnected"
+                            Value="{Binding IsConnected}" />
+                            <Setter Property="Anchor"
+                            Value="{Binding Anchor, Mode=OneWayToSource}" />
+                            <Setter Property="HeaderTemplate">
+                                <Setter.Value>
+                                    <DataTemplate DataType="{x:Type local:ConnectorViewModel}">
+                                        <TextBox Text="{Binding Value}"
+                                         IsEnabled="False" />
+                                    </DataTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+
+                        <DataTemplate DataType="{x:Type local:FunctionViewModel}">
+                            <vf:Node Content="{Binding Title}"
+                                 Input="{Binding Input}"
+                                 Output="{Binding Output, Converter={StaticResource ItemToListConverter}}"
+                                 Padding="5 0 0 0" />
+                        </DataTemplate>
+
+                    </vf:FlowEditor.Resources>
+
+                    <!--连接线模板-->
+                    <vf:FlowEditor.ConnectionTemplate>
+                        <DataTemplate DataType="{x:Type local:ConnectionViewModel}">
+                            <vf:CircuitConnection Source="{Binding Output.Anchor}"
+                                          Target="{Binding Input.Anchor}"
+                                          SourceOffset="10,0"
+                                          TargetOffset="20 0"
+                                          OffsetMode="Circle"/>
+                        </DataTemplate>
+                    </vf:FlowEditor.ConnectionTemplate>
+
+                    <!--单元容器样式-->
+                    <vf:FlowEditor.ItemContainerStyle>
+                        <Style TargetType="{x:Type vf:ItemContainer}" BasedOn="{StaticResource {x:Type vf:ItemContainer}}">
+                            <Setter Property="Location" Value="{Binding Location}"/>
+                            <Setter Property="IsSelected" Value="{Binding IsSelected}"/>
+                        </Style>
+                    </vf:FlowEditor.ItemContainerStyle>
+
+                    <!--右键菜单-->
+                    <vf:FlowEditor.ContextMenu>
+                        <ContextMenu DataContext="{Binding DataContext, Source={StaticResource EditorProxy}}">
+                            <MenuItem Header="Debug Flows"
+                              ItemsSource="{Binding AvailableFuncItems}">
+                                <MenuItem.ItemContainerStyle>
+                                    <Style TargetType="MenuItem">
+                                        <Setter Property="Header"
+                                        Value="{Binding Title}" />
+                                        <Setter Property="Command"
+                                        Value="{Binding DataContext.CreateFuncItemCommand, Source={StaticResource EditorProxy}}" />
+                                        <Setter Property="CommandParameter">
+                                            <Setter.Value>
+                                                <MultiBinding Converter="{local:FunctionInfoConverter}">
+                                                    <Binding />
+                                                    <Binding RelativeSource="{RelativeSource AncestorType=ContextMenu}"
+                                                     Path="PlacementTarget.MouseLocation" />
+                                                </MultiBinding>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </MenuItem.ItemContainerStyle>
+                            </MenuItem>
+                        </ContextMenu>
+                    </vf:FlowEditor.ContextMenu>
+
+
+                </vf:FlowEditor>
+
+
+            </Grid>
+            <GridSplitter Grid.Column="3" Width="3" HorizontalAlignment="Stretch"></GridSplitter>
+            <Grid Grid.Column="4" Margin="5">
+                <TextBlock Text="这里将放置各种调试信息"/>
+                
+            </Grid>
+        </Grid>
+
+        <StatusBar Grid.Row="3" Background="#007ACC">
+            <Label Content="就绪" Foreground="White"/>
+        </StatusBar>
+        
     </Grid>
 </Window>

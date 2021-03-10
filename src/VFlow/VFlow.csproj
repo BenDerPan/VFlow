@@ -5,7 +5,7 @@
     <TargetFramework>net5.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
     <ApplicationIcon>vflow.ico</ApplicationIcon>
-    <RootNamespace>VFlowApp</RootNamespace>
+    <RootNamespace>VFlow</RootNamespace>
     <Authors>BenDerPan</Authors>
     <Product>BenDerPan</Product>
     <Description>Visual based workflow editor.</Description>
@@ -54,7 +54,7 @@
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Themes\Nodify.xaml">
+    <Page Update="Themes\VFlow.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
