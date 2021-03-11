@@ -1,0 +1,32 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net5.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <RootNamespace>VFlow</RootNamespace>
+    <Authors>BenDerPan</Authors>
+    <Company>BenDerPan</Company>
+    <Product>BenDerPan</Product>
+    <Copyright>https://github.com/BenDerPan/VFlow</Copyright>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/BenDerPan/VFlow</PackageProjectUrl>
+    <PackageIcon>vflow.png</PackageIcon>
+    <RepositoryUrl>https://github.com/BenDerPan/VFlow</RepositoryUrl>
+    <RepositoryType>github</RepositoryType>
+    <PackageTags>flow based workflow programming winform</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="vflow.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="DockPanelSuite" Version="3.0.6" />
+    <PackageReference Include="DockPanelSuite.ThemeVS2015" Version="3.0.6" />
+  </ItemGroup>
+
+</Project>
