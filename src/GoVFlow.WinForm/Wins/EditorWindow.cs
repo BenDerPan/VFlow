@@ -20,6 +20,25 @@ namespace VFlow
             InitializeComponent();
             AutoScaleMode = AutoScaleMode.Dpi;
             DockAreas = DockAreas.Document | DockAreas.Float;
+
+            GenerateTest();
+        }
+
+        public void GenerateTest()
+        {
+            Dictionary<int, GoNode> dictNodes = new Dictionary<int, GoNode>();
+            for (int i = 0; i < 10; i++)
+            {
+                var node= flowEditor.InsertNode(PointF.Empty, $"Task Flow {i}");
+                dictNodes.Add(i, node);
+            }
+
+            for (int i = 0; i < 9; i++)
+            {
+                flowEditor.InsertLink(dictNodes[i], dictNodes[i + 1],"");
+            }
+            flowEditor.ForceLayout();
+            flowEditor.ZoomToFit();
         }
     }
 }

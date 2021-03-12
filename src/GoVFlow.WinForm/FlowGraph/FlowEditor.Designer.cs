@@ -29,12 +29,26 @@ namespace VFlow.FlowGraph
         /// </summary>
         private void InitializeComponent()
         {
+            this.goView = new Northwoods.Go.GoView();
             this.SuspendLayout();
+            // 
+            // goView
+            // 
+            this.goView.ArrowMoveLarge = 10F;
+            this.goView.ArrowMoveSmall = 1F;
+            this.goView.BackColor = System.Drawing.Color.White;
+            this.goView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.goView.Location = new System.Drawing.Point(0, 0);
+            this.goView.Name = "goView";
+            this.goView.Size = new System.Drawing.Size(841, 519);
+            this.goView.TabIndex = 0;
+            this.goView.Text = "goView1";
             // 
             // FlowEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.goView);
             this.Name = "FlowEditor";
             this.Size = new System.Drawing.Size(841, 519);
             this.ResumeLayout(false);
@@ -42,5 +56,7 @@ namespace VFlow.FlowGraph
         }
 
         #endregion
+
+        private Northwoods.Go.GoView goView;
     }
 }

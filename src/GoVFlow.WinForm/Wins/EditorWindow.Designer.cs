@@ -34,6 +34,7 @@ namespace VFlow
             // 
             // flowEditor
             // 
+            this.flowEditor.BackColor = System.Drawing.Color.White;
             this.flowEditor.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowEditor.Location = new System.Drawing.Point(0, 0);
             this.flowEditor.Name = "flowEditor";
