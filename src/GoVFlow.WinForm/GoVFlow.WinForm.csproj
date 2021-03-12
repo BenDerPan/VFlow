@@ -57,6 +57,7 @@
     <Compile Include="FlowGraph\FlowEditor.Designer.cs">
       <DependentUpon>FlowEditor.cs</DependentUpon>
     </Compile>
+    <Compile Include="FlowGraph\VNode.cs" />
     <Compile Include="FormMain.cs">
       <SubType>Form</SubType>
     </Compile>

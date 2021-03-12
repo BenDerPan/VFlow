@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace VFlow.FlowGraph
+namespace VFlow
 {
     [Serializable]
     public class AnimatedLink : GoLabeledLink

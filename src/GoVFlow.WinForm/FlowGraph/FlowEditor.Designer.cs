@@ -1,5 +1,5 @@
 ﻿
-namespace VFlow.FlowGraph
+namespace VFlow
 {
     partial class FlowEditor
     {

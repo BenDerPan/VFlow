@@ -29,7 +29,7 @@ namespace VFlow
         /// </summary>
         private void InitializeComponent()
         {
-            this.flowEditor = new VFlow.FlowGraph.FlowEditor();
+            this.flowEditor = new VFlow.FlowEditor();
             this.SuspendLayout();
             // 
             // flowEditor
@@ -55,6 +55,6 @@ namespace VFlow
 
         #endregion
 
-        private FlowGraph.FlowEditor flowEditor;
+        private FlowEditor flowEditor;
     }
 }
