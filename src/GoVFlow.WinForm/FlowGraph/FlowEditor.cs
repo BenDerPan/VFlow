@@ -193,7 +193,7 @@ namespace VFlow
             AnimatedLink link = new AnimatedLink();
             link.UserFlags = userFlag;
             link.UserObject = userObj;
-            link.FromPort = from.Ports.ToList()[0];
+            link.FromPort = from.Ports.ToList()[1];
             link.ToPort = to.Ports.ToList()[0];
             (link.MidLabel as GoText).Text = relation;
             goView.Document.LinksLayer.Add(link);

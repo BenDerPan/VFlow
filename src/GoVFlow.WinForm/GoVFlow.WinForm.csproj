@@ -138,6 +138,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\terminal.png" />
     <Content Include="vflow.ico" />
     <Content Include="vflow.png" />
   </ItemGroup>
